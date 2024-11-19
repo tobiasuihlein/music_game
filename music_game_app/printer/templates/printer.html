@@ -1,0 +1,64 @@
+{% extends "layout.html" %}
+
+{% block main %}
+
+<div class="page-content-container">
+    <div class="sidebar-container">
+        <h1>Sidebar</h1>
+    </div>
+    <div class="main-container">
+        <div class="ui-container">
+            <div class="audio-container">
+                <audio id="audio-player" controls></audio>
+            </div>
+            <div class="playlist-form-container">
+                <form id="playlist-form" class="searchbar" method="post">
+                    {% csrf_token %}
+                    <input type="text" style="border: none;" name="playlist-input-id" placeholder="Spotify Playlist ID">
+                    <button type="submit" class="submit-button"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-search"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg></button>
+                </form>
+            </div>
+        </div>
+        <div class="table-container">
+            <table>
+                <tr>
+                    <th class="centered-column"></th>
+                    <th>TITLE</th>
+                    <th>ARTIST</th>
+                    <th class="centered-column">REALEASE YEAR</th>
+                </tr>
+                {% for track_item in results.tracks.items %}
+                <tr>
+                    <td class="centered-column">
+                        {% if track_item.track.preview_url %}
+                            <button data-preview-url="{{track_item.track.preview_url}}" class="play-button">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+                                    <circle cx="50" cy="50" r="47" fill="transparent" stroke="currentColor" stroke-width="6"/>
+                                    <path d="M35 25 L35 75 L75 50 Z" fill="currentColor"/>
+                                </svg>
+                            </button>
+                        {% else %}<div class="na-symbol" style="font-size: 0.8rem;"></div>
+                        {% endif %}
+                    </td>
+                    <td class="title-column">{{ track_item.track.name}}</td>
+                    <td>{% for artist in track_item.track.artists %}{{ artist.name }} {% endfor %}</td>
+                    <td class="centered-column">{{ track_item.track.album.release_date|slice:4 }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+    const audioPlayer = document.getElementById('audio-player');
+    document.querySelectorAll('[data-preview-url]').forEach(button => {
+        button.addEventListener('click', () => {
+            audioPlayer.src = button.dataset.previewUrl;
+            audioPlayer.play();
+        });
+    });
+</script>
+
+{% endblock %}
+

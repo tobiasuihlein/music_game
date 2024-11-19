@@ -1,0 +1,38 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    
+    <!-- Primary Meta Tags -->
+    <title>Music Game</title>
+    <meta name="title" content="Music Game">
+    <meta name="description" content="Brief description of your page">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="{% static 'printer/css/normalize.css' %}">
+    <link rel="stylesheet" href="{% static 'printer/css/styles.css' %}">
+
+</head>
+<body>
+    <header>
+        {% block header %}
+        {% endblock %}
+    </header>
+
+    <main>
+        {% block main %}
+        {% endblock %}
+    </header>
+    </main>
+
+    <footer>
+        {% block footer %}
+        {% endblock %}
+    </header>
+    </footer>
+    
+</body>
+</html>
