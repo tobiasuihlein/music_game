@@ -41,9 +41,7 @@ def reorder_pdf(input_buffer):
     writer.add_metadata(reader.metadata)
 
     page_count = len(reader.pages)
-    print(page_count)
     for page_num in range(int(page_count/2)):
-        print(int(page_count/2))
         writer.add_page(reader.pages[page_num])
         writer.add_page(reader.pages[page_num + int(page_count/2)])
     

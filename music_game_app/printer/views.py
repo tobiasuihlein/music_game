@@ -39,20 +39,15 @@ def dashboard(request):
 
 
 def display_pdf(request):
-    if request.method == "POST":
-        playlist_id = request.POST.get("playlist-id")
-        print(playlist_id)
 
     if 'playlist_dict' in request.session:
         playlist_dict = request.session['playlist_dict']
     else:
         print("No playlist in session data")
         return HttpResponse("<h1>Error: Playlist not in Session Data</h1>")
-
-    tracks = playlist_dict['track_items']
     
-    if tracks:
-        buffer = create_game_cards(playlist_name=playlist_dict['playlist_name'], all_songs=tracks, card_size_in_mm=60)
+    if playlist_dict:
+        buffer = create_game_cards(playlist_name=playlist_dict['playlist_name'], all_songs=playlist_dict['track_items'], card_size_in_mm=60)
         buffer = reorder_pdf(buffer)
         return FileResponse(buffer, as_attachment=False, filename='your_pdf.pdf')
     else:
