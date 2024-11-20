@@ -11,6 +11,12 @@
         </div>
         <div class="audio-container">
             <audio id="audio-player" class="custom-audio" controls></audio>
+            <div id="audio-info" class="audio-info" style="display: none">
+                <span>Now playing:</span>
+                <strong><span id="audio-title"></span></strong>
+                <div>by <span id="audio-artists"></span></div>
+            </div>
+
         </div>
     </div>
     <div class="main-container">
@@ -36,7 +42,7 @@
                 <tr>
                     <td class="centered-column">
                         {% if track_item.preview_url %}
-                            <button data-preview-url="{{track_item.preview_url}}" class="play-button">
+                            <button data-preview-url="{{track_item.preview_url}}" data-title="{{track_item.title}}" data-artists="{{track_item.artists|join:", "}}" class="play-button">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
                                     <circle cx="50" cy="50" r="47" fill="transparent" stroke="currentColor" stroke-width="6"/>
                                     <path d="M35 25 L35 75 L75 50 Z" fill="currentColor"/>
@@ -51,7 +57,7 @@
                             </button>
                         {% endif %}
                     </td>
-                    <td class="title-column">{{ track_item.title}}</td>
+                    <td class="title-column">{{ track_item.title }}</td>
                     <td>{{ track_item.artists|join:", " }}</td>
                     <td class="centered-column">{{ track_item.release_year }}</td>
                 </tr>
@@ -63,10 +69,16 @@
 
 <script>
     const audioPlayer = document.getElementById('audio-player');
+    const audioTitle = document.getElementById('audio-title');
+    const audioArtists = document.getElementById('audio-artists');
+    const audioInfo = document.getElementById('audio-info');
     document.querySelectorAll('[data-preview-url]').forEach(button => {
         button.addEventListener('click', () => {
             audioPlayer.src = button.dataset.previewUrl;
             audioPlayer.play();
+            audioInfo.style.display = "flex";
+            audioTitle.textContent = button.dataset.title;
+            audioArtists.textContent = button.dataset.artists;
         });
     });
 </script>
