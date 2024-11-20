@@ -32,7 +32,7 @@ def dashboard(request):
     playlist_dict = create_dict(results)
 
     request.session['playlist_dict'] = playlist_dict
-    request.session.set_expiry(3600)
+    request.session.set_expiry(0)
 
     context={"playlist_id": playlist_id, "results": results, "playlist_dict": playlist_dict}
     return render(request, "dashboard.html", context)
