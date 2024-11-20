@@ -155,6 +155,10 @@ tr:hover{
     color: var(--text-color-blue-1)
 }
 
+.text-dark-2{
+    color: var(--text-color-dark-2)
+}
+
 
 .play-button, .na-container{
     color: var(--text-color-light-2);
@@ -234,6 +238,7 @@ input:focus {
 }
 
 .audio-info {
+    color: var(--text-color-dark-1);
     padding: 2rem 0 1rem 0;
     display: flex;
     flex-direction: column;

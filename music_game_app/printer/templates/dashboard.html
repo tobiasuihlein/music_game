@@ -5,16 +5,16 @@
 <div class="page-content-container">
     <div class="sidebar-container">
         <div class="sidebar-playlist-info">
-            <div class="sidebar-row"><span style="font-size: 1.2rem"><strong>{{ playlist_dict.playlist_name }}</strong></span></div>
-            <div class="sidebar-row">Total songs: <strong>{{ playlist_dict.total_songs }}</strong></div>
-            <div class="sidebar-row">Preview available: <strong>{{ playlist_dict.available_songs }}</strong></div>
+            <div class="sidebar-row"><span style="font-size: 1.2rem; font-weight: 500">{{ playlist_dict.playlist_name }}</span></div>
+            <div class="sidebar-row">Total songs: <span style="font-weight: 500">{{ playlist_dict.total_songs }}</span></div>
+            <div class="sidebar-row">Preview available: <span style="font-weight: 500">{{ playlist_dict.available_songs }}</span></div>
         </div>
         <div class="audio-container">
             <audio id="audio-player" class="custom-audio" controls></audio>
             <div id="audio-info" class="audio-info" style="display: none">
-                <span>Now playing:</span>
-                <strong><span id="audio-title"></span></strong>
-                <div>by <span id="audio-artists"></span></div>
+                <span class="text-dark-2">Now playing:</span>
+                <span id="audio-title" style="font-weight: 500"></span>
+                <div class="text-dark-2">by <span id="audio-artists"></span></div>
             </div>
 
         </div>
