@@ -4,6 +4,7 @@ from reportlab.lib.units import mm
 from reportlab.pdfgen import canvas
 import io
 import qrcode
+import shutil
 
 
 class QRCodeGenerator:
@@ -11,6 +12,10 @@ class QRCodeGenerator:
         self.temp_dir = "temp_codes"
         if not os.path.exists(self.temp_dir):
             os.makedirs(self.temp_dir)
+
+    def cleanup(self):
+        if os.path.exists(self.temp_dir):
+            shutil.rmtree(self.temp_dir)
 
     def generate_qr_code(self, preview_url, track_id):
         """Generate QR code for the preview URL"""
@@ -206,6 +211,7 @@ def create_game_cards(playlist_name, all_songs, card_size_in_mm):
         if page < (len(songs) - 1) // (cards_per_row * cards_per_col):
             c.showPage()
     
+    code_generator.cleanup()
     c.save()
     buffer.seek(0)
     return buffer
