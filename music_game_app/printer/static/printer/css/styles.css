@@ -13,8 +13,8 @@
     --text-color-light-2: rgb(148 163 184);
     --text-color-green-1: rgb(16 185 129);
     --text-color-red-1: rgb(225 29 72);
-    --text-color-red-2: rgb(253 164 175);
-    --text-color-blue-1: rgb(30 64 175);
+    --text-color-red-2: rgb(248 113 113);
+    --text-color-blue-1: rgb(113, 139, 180);
     --border-color: rgb(203 213 225);
 }
 
@@ -47,9 +47,8 @@ header{
     background-color: var(--background-color-1);
     border: solid 1px var(--border-color);
     border-radius: 12px;
-    width: 0px;
+    width: 400px;
     height: 100%;
-    min-height: 500px;
     flex-shrink: 0;
 }
 
@@ -64,17 +63,49 @@ header{
     margin: 20px;
     background-color: none;
     display: flex;
-    justify-content: left;
+    justify-content: space-between;
     align-items: center;
     gap: 50px;
 }
 
+.sidebar-playlist-info{
+    color: var(--text-color-dark-1);
+    padding: 2rem;
+}
+
+.sidebar-row{
+    margin: 1rem;
+    text-align: center;
+}
+
 .audio-container{
     border: solid 0px red;
+    width: 100%;
+    padding-bottom: 2rem;
+    text-align: center;
 }
 
 .playlist-form-container{
     border: solid 0px red;
+}
+
+.generator-button-container{
+    border: solid 0px red;
+}
+
+.generator-button{
+    background-color: white;
+    border: solid 1px var(--border-color);
+    border-radius: 999px;
+    padding: 0.8rem 1.2rem;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--text-color-dark-2)
+}
+
+.generator-button:hover{
+    background-color: var(--background-color-2);
 }
 
 .table-container{
@@ -124,20 +155,29 @@ tr:hover{
     color: var(--text-color-blue-1)
 }
 
-.play-button{
+
+.play-button, .na-container{
     color: var(--text-color-light-2);
     display: inline-flex;
     justify-content: center;
     align-items: center;
     width: 2rem;
     height: 1.8rem;
+    svg{
+        width: 100%;
+        height: 100%;
+        padding-top: 0.1rem;    
+    }
 }
 
-.play-button svg {
-    width: 100%;
-    height: 100%;
-    padding-top: 0.1rem;
+.play-button{
+    color: var(--text-color-blue-1);
 }
+
+.na-container{
+    color: var(--text-color-red-2);
+}
+
 
 .play-button:hover{
     color: var(--text-color-light-1);
@@ -173,4 +213,17 @@ tr:hover{
 input:focus {
     outline: none;
     border: none;
+}
+
+.custom-audio::-webkit-media-controls-enclosure,
+.custom-audio::-webkit-media-controls-panel {
+    background-color: #ffffff;
+    border-radius: 999px;
+    border: solid 1px var(--border-color);
+}
+
+.custom-audio::-webkit-media-controls-play-button {
+    background-color: var(--text-color-blue-1);
+    border-radius: 50%;
+    margin: 0 8px 0 3px;
 }

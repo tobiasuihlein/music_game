@@ -1,0 +1,75 @@
+{% extends "layout.html" %}
+
+{% block main %}
+
+<div class="page-content-container">
+    <div class="sidebar-container">
+        <div class="sidebar-playlist-info">
+            <div class="sidebar-row"><span style="font-size: 1.2rem"><strong>{{ playlist_dict.playlist_name }}</strong></span></div>
+            <div class="sidebar-row">Total songs: <strong>{{ playlist_dict.total_songs }}</strong></div>
+            <div class="sidebar-row">Preview available: <strong>{{ playlist_dict.available_songs }}</strong></div>
+        </div>
+        <div class="audio-container">
+            <audio id="audio-player" class="custom-audio" controls></audio>
+        </div>
+    </div>
+    <div class="main-container">
+        <div class="ui-container">
+            <div class="playlist-form-container">
+                <form id="playlist-form" class="searchbar" method="post">
+                    {% csrf_token %}
+                    <input type="text" style="border: none;" name="playlist-input-id" placeholder="Spotify Playlist ID">
+                    <button type="submit" class="submit-button"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-right"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></button>
+                </form>
+            </div>
+            <div class="generator-button-container">
+                <form id="generator-button-form" method="post" action="/pdf" target="_blank">
+                    {% csrf_token %}
+                    <input type="text" name="playlist-id" value="{{ playlist_id }}" hidden>
+                    <button type="submit" class="generator-button"><div>Generate PDF File</div></button>
+                </form>
+            </div>
+        </div>
+        <div class="table-container">
+            <table>
+                {% for track_item in playlist_dict.track_items %}
+                <tr>
+                    <td class="centered-column">
+                        {% if track_item.preview_url %}
+                            <button data-preview-url="{{track_item.preview_url}}" class="play-button">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+                                    <circle cx="50" cy="50" r="47" fill="transparent" stroke="currentColor" stroke-width="6"/>
+                                    <path d="M35 25 L35 75 L75 50 Z" fill="currentColor"/>
+                                </svg>
+                            </button>
+                        {% else %}
+                            <button class="na-container" style="cursor: default">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+                                    <circle cx="50" cy="50" r="47" fill="transparent" stroke="currentColor" stroke-width="6"/>
+                                    <line x1="25" y1="75" x2="75" y2="25" stroke="currentColor" stroke-width="6"/>
+                                </svg>
+                            </button>
+                        {% endif %}
+                    </td>
+                    <td class="title-column">{{ track_item.title}}</td>
+                    <td>{{ track_item.artists|join:", " }}</td>
+                    <td class="centered-column">{{ track_item.release_year }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+    const audioPlayer = document.getElementById('audio-player');
+    document.querySelectorAll('[data-preview-url]').forEach(button => {
+        button.addEventListener('click', () => {
+            audioPlayer.src = button.dataset.previewUrl;
+            audioPlayer.play();
+        });
+    });
+</script>
+
+{% endblock %}
+
