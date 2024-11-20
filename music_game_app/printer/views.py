@@ -21,7 +21,7 @@ def dashboard(request):
         user_input = request.POST.get("playlist-input-id")
         playlist_id = get_playlist_id_from_url(user_input)
     else:
-        playlist_id="37i9dQZF1DX36edUJpD76c"
+        playlist_id="37i9dQZF1DX4jP4eebSWR9"
     
     results = sp.playlist(playlist_id=playlist_id)
 

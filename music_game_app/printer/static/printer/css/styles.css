@@ -191,7 +191,7 @@ tr:hover{
     background-color: white;
     border-radius: 999px;
     border: solid 1px var(--border-color);
-    min-width: 320px;
+    min-width: 420px;
 }
 
 .submit-button{
@@ -220,6 +220,11 @@ input:focus {
     background-color: #ffffff;
     border-radius: 999px;
     border: solid 1px var(--border-color);
+}
+
+.custom-audio::-webkit-media-controls {
+    padding-bottom: 1px;
+    height: auto;
 }
 
 .custom-audio::-webkit-media-controls-play-button {
