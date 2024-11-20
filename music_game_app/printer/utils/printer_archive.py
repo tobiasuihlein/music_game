@@ -1,9 +1,114 @@
 import os
+from reportlab.lib import colors
 from reportlab.lib.pagesizes import A4
 from reportlab.lib.units import mm
 from reportlab.pdfgen import canvas
+from reportlab.graphics import renderPDF
+from reportlab.graphics.shapes import Image
+import requests
+from dotenv import load_dotenv
+import base64
+import json
 import io
+from PIL import Image as PILImage
 import qrcode
+
+load_dotenv()
+
+class SpotifyAPI:
+    def __init__(self):
+        self.client_id = os.getenv('SPOTIFY_CLIENT_ID')
+        self.client_secret = os.getenv('SPOTIFY_CLIENT_SECRET')
+        self.token = self.get_token()
+
+    def get_token(self):
+        auth_string = f"{self.client_id}:{self.client_secret}"
+        auth_bytes = auth_string.encode("utf-8")
+        auth_base64 = str(base64.b64encode(auth_bytes), "utf-8")
+        
+        url = "https://accounts.spotify.com/api/token"
+        headers = {
+            "Authorization": f"Basic {auth_base64}",
+            "Content-Type": "application/x-www-form-urlencoded"
+        }
+        data = {"grant_type": "client_credentials"}
+        
+        result = requests.post(url, headers=headers, data=data)
+        json_result = json.loads(result.content)
+        return json_result["access_token"]
+
+    def get_track_info(self, track_id):
+        """Get detailed track info including preview URL"""
+        track_url = f"https://api.spotify.com/v1/tracks/{track_id}"
+        headers = {"Authorization": f"Bearer {self.token}"}
+        
+        track_result = requests.get(track_url, headers=headers)
+        track_json = json.loads(track_result.content)
+        
+        if "error" in track_json:
+            raise Exception(f"Track fetch error: {track_json['error']['message']}")
+        
+        # Get album info for release date
+        album_id = track_json["album"]["id"]
+        album_url = f"https://api.spotify.com/v1/albums/{album_id}"
+        
+        album_result = requests.get(album_url, headers=headers)
+        album_json = json.loads(album_result.content)
+        
+        if not track_json.get("preview_url"):
+            raise Exception("No preview URL available")
+            
+        return {
+            "id": track_json["id"],
+            "title": track_json["name"],
+            "artist": track_json["artists"][0]["name"],
+            "preview_url": track_json["preview_url"],
+            "year": album_json["release_date"][:4],
+            "spotify_url": track_json["external_urls"]["spotify"]
+        }
+    
+
+    def get_playlist_tracks(self, playlist_id):
+        """Fetch all tracks from a playlist"""
+        valid_tracks = []
+        offset = 0
+        limit = 100  # Maximum allowed by Spotify API
+        
+        while True:
+            url = f"https://api.spotify.com/v1/playlists/{playlist_id}/tracks"
+            headers = {"Authorization": f"Bearer {self.token}"}
+            params = {
+                "offset": offset,
+                "limit": limit,
+                "fields": "items(track(id,name,artists,album(release_date))),next"
+            }
+            
+            result = requests.get(url, headers=headers, params=params)
+            json_result = json.loads(result.content)
+            
+            if "error" in json_result:
+                print(f"Error fetching playlist: {json_result['error']['message']}")
+                return []
+            
+            # Process each track
+            for item in json_result["items"]:
+                if item["track"] and item["track"]["id"]:
+                    try:
+                        track_info = self.get_track_info(item["track"]["id"])
+                        valid_tracks.append(track_info)
+                        #print(f"✓ Added: {track_info['title']} by {track_info['artist']} ({track_info['year']})")
+                    except Exception as e:
+                        track_name = item["track"]["name"]
+                        artist_name = item["track"]["artists"][0]["name"]
+                        #print(f"✗ Skipped: {track_name} by {artist_name} - {str(e)}")
+            
+            # Check if we've got all tracks
+            if len(json_result["items"]) < limit:
+                break
+                
+            offset += limit
+        
+        return valid_tracks
 
 
 class QRCodeGenerator:
@@ -38,15 +143,12 @@ def truncate_text(text, max_length):
         return text
     return text[:max_length-3] + "..."
 
-def create_game_cards(playlist_name, all_songs, card_size_in_mm):
+def create_game_cards(songs):
 
-    songs = []
-    for song in all_songs:
-        if song['preview_url']:
-            songs.append(song)
+    print(songs[0])
 
     # Card dimensions (50mm x 50mm)
-    card_size = card_size_in_mm*mm
+    card_size = 50*mm
     padding = 5*mm
     id_margin = 3.5*mm
     
@@ -56,7 +158,6 @@ def create_game_cards(playlist_name, all_songs, card_size_in_mm):
     # Create PDF
     buffer = io.BytesIO()
     c = canvas.Canvas(buffer, pagesize=A4)
-    c.setTitle(f"{playlist_name} Music Cards")
     width, height = A4
     
     # Calculate cards per page
@@ -134,15 +235,16 @@ def create_game_cards(playlist_name, all_songs, card_size_in_mm):
             # Draw card border
             c.rect(x, y, card_size, card_size)
             
+ 
             # Add artist first (with line breaks)
-            c.setFont("Helvetica", 10)
-            artist_text = truncate_text(', '.join(song['artists']), 80)
+            c.setFont("Helvetica", 8)
+            artist_text = truncate_text(song['artist'], 40)
             artist_lines = []
             current_line = ""
             words = artist_text.split()
             for word in words:
                 test_line = current_line + " " + word if current_line else word
-                if c.stringWidth(test_line, "Helvetica", 10) <= 0.85*card_size:
+                if c.stringWidth(test_line, "Helvetica", 8) <= 40*mm:
                     current_line = test_line
                 else:
                     artist_lines.append(current_line)
@@ -150,13 +252,13 @@ def create_game_cards(playlist_name, all_songs, card_size_in_mm):
             if current_line:
                 artist_lines.append(current_line)
 
-            title_text = truncate_text(song['title'], 80)
+            title_text = truncate_text(song['title'], 60)
             title_lines = []
             current_line = ""
             words = title_text.split()
             for word in words:
                 test_line = current_line + " " + word if current_line else word
-                if c.stringWidth(test_line, "Helvetica", 10) <= 0.85*card_size:
+                if c.stringWidth(test_line, "Helvetica", 8) <= 40*mm:
                     current_line = test_line
                 else:
                     title_lines.append(current_line)
@@ -176,28 +278,28 @@ def create_game_cards(playlist_name, all_songs, card_size_in_mm):
             content_y = y + (card_size + total_height) / 2
 
             # Draw artist lines
-            c.setFont("Helvetica", 10)
+            c.setFont("Helvetica", 8)
             for i, line in enumerate(artist_lines):
-                artist_width = c.stringWidth(line, "Helvetica", 10)
+                artist_width = c.stringWidth(line, "Helvetica", 8)
                 artist_x = x + (card_size - artist_width) / 2
-                c.drawString(artist_x, content_y - (i * 15) + 15, line)
+                c.drawString(artist_x, content_y - (i * 10) + 10, line)
 
             # Adjust vertical position based on number of artist lines
             content_y -= (len(artist_lines) * 10 + 10)
 
             # Add year
             c.setFont("Helvetica-Bold", 20)
-            year_width = c.stringWidth(str(song['release_year']), "Helvetica-Bold", 20)
+            year_width = c.stringWidth(str(song['year']), "Helvetica-Bold", 20)
             year_x = x + (card_size - year_width) / 2
-            c.drawString(year_x, content_y, str(song['release_year']))
+            c.drawString(year_x, content_y, str(song['year']))
 
             # Add title
-            content_y -= 25
-            c.setFont("Helvetica", 10)
+            content_y -= 20
+            c.setFont("Helvetica", 8)
             for i, line in enumerate(title_lines):
-                title_width = c.stringWidth(line, "Helvetica", 10)
+                title_width = c.stringWidth(line, "Helvetica", 8)
                 title_x = x + (card_size - title_width) / 2
-                c.drawString(title_x, content_y - (i * 15), line)
+                c.drawString(title_x, content_y - (i * 10), line)
 
             # Add small ID with increased margin
             c.setFont("Helvetica", 6)
