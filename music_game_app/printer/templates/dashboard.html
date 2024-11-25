@@ -3,20 +3,43 @@
 {% block main %}
 
 <div class="page-content-container">
-    <div class="sidebar-container">
-        <div class="sidebar-playlist-info">
-            <div class="sidebar-row"><span style="font-size: 1.2rem; font-weight: 500">{{ playlist_dict.playlist_name }}</span></div>
-            <div class="sidebar-row">Total songs: <span style="font-weight: 500">{{ playlist_dict.total_songs }}</span></div>
-            <div class="sidebar-row">Preview available: <span style="font-weight: 500">{{ playlist_dict.available_songs }}</span></div>
-        </div>
-        <div class="audio-container">
-            <audio id="audio-player" class="custom-audio" controls></audio>
-            <div id="audio-info" class="audio-info" style="display: none">
-                <span class="text-dark-2">Now playing:</span>
-                <span id="audio-title" style="font-weight: 500"></span>
-                <div class="text-dark-2">by <span id="audio-artists"></span></div>
+    <div>
+        <div class="sidebar-container">
+            <div class="sidebar-playlist-info">
+                <div class="sidebar-row"><span style="font-size: 1.2rem; font-weight: 500">{{ playlist_dict.playlist_name }}</span></div>
+                <div class="sidebar-row">Total songs: <span style="font-weight: 500">{{ playlist_dict.total_songs }}</span></div>
+                <div class="sidebar-row">Preview available: <span style="font-weight: 500">{{ playlist_dict.available_songs }}</span></div>
             </div>
-
+            <div class="audio-container">
+                <audio id="audio-player" class="custom-audio" controls></audio>
+                <div id="audio-info" class="audio-info" style="display: none">
+                    <span class="text-dark-2">Now playing:</span>
+                    <span id="audio-title" style="font-weight: 500"></span>
+                    <div class="text-dark-2">by <span id="audio-artists"></span></div>
+                </div>
+            </div>
+        </div>
+        <div class="sidebar-container">
+            <div class="how-to-container">
+                <div style="text-align: center">
+                    <span style="font-weight: 500; font-size: 1.2rem;">About this Tool</span><br>
+                </div>
+                <div style="font-size: 1.2rem;">
+                    <span>Create printable cards from your Spotify playlists for a music quiz game. Each double-sided card features a QR code linking to a song preview on one side and song details on the other.</span>
+                    <br><br>
+                    <span>Use the cards for playing a Hitster-style music guessing game with friends. Scan QR codes with this dedicated <a title="Link to QR Code Scanner" href="https://tobiasuihlein.github.io/spotify_scanner" target="_blank" rel="noopener noreferrer">player app</a>.</span>
+                </div>
+                <div style="text-align: center; margin-top: 1.6rem;">
+                    <span style="font-weight: 500; font-size: 1.2rem;">Important Notes</span><br>
+                </div>
+                <div style="font-size: 1.2rem;">
+                    <ul>
+                        <li><span style="font-weight: 400">Preview Availability: </span>Not all Spotify songs have preview links available. Your PDF will only include cards for songs that have working previews.</li>
+                        <li><span style="font-weight: 400">Original Versions: </span>Make sure to use the original release version of songs rather than remasters or re-recordings.</li>
+                        <li><span style="font-weight: 400">Time Distribution </span>For the best experience, include songs distrubuted evenly across different decades or time periods.</li>
+                    </ul>
+                </div>
+            </div>
         </div>
     </div>
     <div class="main-container">
