@@ -4,3 +4,4 @@
 **/__pycache__
 **/temp_codes
 **/db.sqlite3
+docker/**/certs/
