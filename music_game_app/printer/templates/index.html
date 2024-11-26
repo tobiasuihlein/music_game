@@ -1,0 +1,91 @@
+{% extends "layout.html" %}
+
+{% load static %}
+
+{% block main %}
+
+
+<div class="help-button-container" id="open-button" style="display: flex">
+    <div class="help-button">{% include 'svg/open.svg' %}</div>
+</div>
+<div class="help-button-container" id="close-button" style="display: none">
+    <div class="help-button">{% include 'svg/close.svg' %}</div>
+</div>
+<div class="page-content-container">
+    <div class="sidebar-container" id="info-box" style="display: none;">
+        <div class="how-to-container">
+            <div style="text-align: center">
+                <span style="font-weight: 500; font-size: 1.2rem;">About this Tool</span><br>
+            </div>
+            <div style="font-size: 1.2rem;">
+                <span>Create printable cards from your Spotify playlists for a music quiz game. Each double-sided card features a QR code linking to a song preview on one side and song details on the other.</span>
+                <br><br>
+                <span>Use the cards for playing a Hitster-style music guessing game with friends. Scan QR codes with this dedicated <a title="Link to QR Code Scanner" href="https://tobiasuihlein.github.io/spotify_scanner" target="_blank" rel="noopener noreferrer">player app</a>.</span>
+            </div>
+            <div style="text-align: center; margin-top: 1.6rem;">
+                <span style="font-weight: 500; font-size: 1.2rem;">Important Notes</span><br>
+            </div>
+            <div style="font-size: 1.2rem;">
+                <ul>
+                    <li><span style="font-weight: 400">Preview Availability: </span>Not all Spotify songs have preview links available. Your PDF will only include cards for songs that have working previews.</li>
+                    <li><span style="font-weight: 400">Original Versions: </span>Make sure to use the original release version of songs rather than remasters or re-recordings.</li>
+                    <li><span style="font-weight: 400">Time Distribution </span>For the best experience, include songs distrubuted evenly across different decades or time periods.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="main-container" style="background: none; border: none;">
+        <div style="display: flex; flex-direction: column; text-align: center; gap: 2rem">
+            <div class="homepage-hero-container">
+                <div style="margin: 20vh 0 2rem 0;">
+                    <div>
+                        <img id="card-image" src="{% static 'printer/img/card_example_qr.png' %}" alt="Example Card QR Code" width="200" class="card-image">
+                    </div>
+                </div>
+                <div class="explanation-container">
+                    <div>
+                        <span class="blue-text" style="font-weight: 500">Enter playlist to create game cards</span>
+                    </div>
+                </div>
+            </div>
+            <div class="searchbar-container">
+                <div class="playlist-form-container">
+                    <form id="playlist-form" class="searchbar" method="post" action="/dashboard">
+                        {% csrf_token %}
+                        <input type="text" style="border: none;" name="playlist-input-id" placeholder="Spotify Playlist URL / ID">
+                        <button type="submit" class="submit-button"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-right"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const cardImage = document.getElementById('card-image')
+    const infoBox = document.getElementById('info-box')
+    const openButton = document.getElementById('open-button')
+    const closeButton = document.getElementById('close-button')
+
+    openButton.addEventListener('click', function () {
+        infoBox.style.display = "flex";
+        this.style.display = "none";
+        closeButton.style.display = "flex";
+    });
+    closeButton.addEventListener('click', function() {
+        infoBox.style.display = "none";
+        this.style.display = "none";
+        openButton.style.display = "flex";
+    });
+    cardImage.addEventListener('mouseenter', function() {
+        this.src = "{% static 'printer/img/card_example_details.png' %}";
+    });
+    cardImage.addEventListener('mouseleave', function() {
+        this.src = "{% static 'printer/img/card_example_qr.png' %}";
+    });
+
+    
+
+</script>
+
+{% endblock %}

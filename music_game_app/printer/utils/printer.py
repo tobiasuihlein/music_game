@@ -174,7 +174,7 @@ def create_game_cards(playlist_name, all_songs, card_size_in_mm):
                 len(artist_lines) * 10 +  # Artist height (10 points per line)
                 0 +  # Year height (increased for larger font)
                 len(title_lines) * 10 +  # Title height (10 points per line)
-                20  # Additional padding
+                10  # Additional padding
             )
 
             # Initialize starting y position to center content

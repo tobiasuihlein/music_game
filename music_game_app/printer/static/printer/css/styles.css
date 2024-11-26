@@ -14,8 +14,10 @@
     --text-color-green-1: rgb(16 185 129);
     --text-color-red-1: rgb(225 29 72);
     --text-color-red-2: rgb(248 113 113);
-    --text-color-blue-1: rgb(113, 139, 180);
+    --text-color-blue-1: hsl(217, 31%, 58%);
+    --text-color-blue-2: hsl(217, 31%, 40%);
     --border-color: rgb(203 213 225);
+    --shadow-color: rgb(231, 237, 244);
 }
 
 button{
@@ -29,12 +31,17 @@ button:hover{
 
 a{
     text-decoration: none;
-    color: var(--text-color-blue-1);
+    color: var(--text-color-blue-2);
     font-weight: 400;
 }
 
-a:visited{
+a:hover{
     color: var(--text-color-blue-1);
+    text-decoration: underline;
+}
+
+a:visited{
+    color: var(--text-color-blue-2);
 }
 
 ul{
@@ -78,6 +85,20 @@ header{
     gap: 30px
 }
 
+.explanation-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
+    gap: 1.2rem;
+}
+
+.bordered-image{
+    border: solid 1px black;
+    width: 100%;
+    height: 100%;
+}
+
 .sidebar-container{
     background-color: var(--background-color-1);
     border: solid 1px var(--border-color);
@@ -94,6 +115,12 @@ header{
     gap: 20px;
     line-height: 1.6rem;
     font-weight: 300;
+}
+
+.chart-container{
+    display: flex;
+    justify-content: center;
+    padding: 1rem;
 }
 
 .main-container{
@@ -196,7 +223,7 @@ tr:hover{
 }
 
 .blue-text{
-    color: var(--text-color-blue-1)
+    color: var(--text-color-blue-2)
 }
 
 .text-dark-2{
@@ -287,4 +314,30 @@ input:focus {
     display: flex;
     flex-direction: column;
     gap: 0.8rem;
+}
+
+.help-button-container {
+    margin: 2rem;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.help-button {
+    color: var(--text-color-blue-2);
+}
+
+.help-button:hover {
+    color: var(--text-color-blue-1);
+    cursor: pointer;
+}
+
+.help-button svg {
+    width: 32px;
+    height: 32px;
+}
+
+.card-image {
+    border: solid 3px var(--text-color-blue-2);
+    border-radius: 8px;
 }

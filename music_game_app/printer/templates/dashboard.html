@@ -20,15 +20,19 @@
             </div>
         </div>
         <div class="sidebar-container">
+            <div style="display: flex; justify-content: center; padding-top: 3rem;">
+                <span style="font-size: 1.2rem; font-weight: 500">Release Year Distribution</span>
+            </div>
+            <div class="chart-container">
+                {% if distribution_chart %}
+                <img src="data:image/png;base64,{{ distribution_chart }}" alt="Distribution Chart">
+                {% else %}
+                <p>Distribution chart not available</p>
+                {% endif %}
+            </div>
+        </div>
+        <div class="sidebar-container">
             <div class="how-to-container">
-                <div style="text-align: center">
-                    <span style="font-weight: 500; font-size: 1.2rem;">About this Tool</span><br>
-                </div>
-                <div style="font-size: 1.2rem;">
-                    <span>Create printable cards from your Spotify playlists for a music quiz game. Each double-sided card features a QR code linking to a song preview on one side and song details on the other.</span>
-                    <br><br>
-                    <span>Use the cards for playing a Hitster-style music guessing game with friends. Scan QR codes with this dedicated <a title="Link to QR Code Scanner" href="https://tobiasuihlein.github.io/spotify_scanner" target="_blank" rel="noopener noreferrer">player app</a>.</span>
-                </div>
                 <div style="text-align: center; margin-top: 1.6rem;">
                     <span style="font-weight: 500; font-size: 1.2rem;">Important Notes</span><br>
                 </div>
