@@ -33,6 +33,7 @@ def dashboard(request):
         playlist_name = api_response['name']
         result = api_response['tracks']
         track_items = result['items']
+        # if length of playlist exceeds 100, results are paginated
         while result['next']:
             result = sp.next(result)
             track_items.extend(result['items'])

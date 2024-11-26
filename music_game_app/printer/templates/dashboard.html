@@ -5,17 +5,14 @@
 <div class="page-content-container">
     <div>
         <div class="sidebar-container">
-            <div class="sidebar-playlist-info">
-                <div class="sidebar-row"><span style="font-size: 1.2rem; font-weight: 500">{{ playlist_dict.playlist_name }}</span></div>
-                <div class="sidebar-row">Total songs: <span style="font-weight: 500">{{ playlist_dict.total_songs }}</span></div>
-                <div class="sidebar-row">Preview available: <span style="font-weight: 500">{{ playlist_dict.available_songs }}</span></div>
-            </div>
-            <div class="audio-container">
-                <audio id="audio-player" class="custom-audio" controls></audio>
-                <div id="audio-info" class="audio-info" style="display: none">
-                    <span class="text-dark-2">Now playing:</span>
-                    <span id="audio-title" style="font-weight: 500"></span>
-                    <div class="text-dark-2">by <span id="audio-artists"></span></div>
+            <div class="how-to-container">
+                <div style="text-align: center; margin-top: 1rem;">
+                    <span style="font-weight: 500; font-size: 1.2rem;">Important Notes</span><br>
+                </div>
+                <div style="font-size: 1.2rem; padding: 0 1rem;">
+                    <p><span style="font-weight: 400">Preview Availability: </span>Not all Spotify songs have preview links available. Your PDF will only include cards for songs that have working previews.</p>
+                    <p><span style="font-weight: 400">Original Versions: </span>Make sure to use the original release version of songs rather than remasters or re-recordings.</p>
+                    <p><span style="font-weight: 400">Time Distribution </span>For the best experience, include songs distrubuted evenly across different decades or time periods.</p>
                 </div>
             </div>
         </div>
@@ -31,20 +28,6 @@
                 {% endif %}
             </div>
         </div>
-        <div class="sidebar-container">
-            <div class="how-to-container">
-                <div style="text-align: center; margin-top: 1.6rem;">
-                    <span style="font-weight: 500; font-size: 1.2rem;">Important Notes</span><br>
-                </div>
-                <div style="font-size: 1.2rem;">
-                    <ul>
-                        <li><span style="font-weight: 400">Preview Availability: </span>Not all Spotify songs have preview links available. Your PDF will only include cards for songs that have working previews.</li>
-                        <li><span style="font-weight: 400">Original Versions: </span>Make sure to use the original release version of songs rather than remasters or re-recordings.</li>
-                        <li><span style="font-weight: 400">Time Distribution </span>For the best experience, include songs distrubuted evenly across different decades or time periods.</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
     </div>
     <div class="main-container">
         <div class="ui-container">
@@ -54,6 +37,10 @@
                     <input type="text" style="border: none;" name="playlist-input-id" placeholder="Spotify Playlist URL / ID">
                     <button type="submit" class="submit-button"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-right"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></button>
                 </form>
+            </div>
+            <div id="playlist-info" class="playlist-info" style="visibility: visible">
+                <span style="font-weight: 500">{{ playlist_dict.playlist_name }}</span>
+                <div class="text-dark-2">{{ playlist_dict.available_songs }} previews available</div>
             </div>
             <div class="generator-button-container">
                 <form id="generator-button-form" method="post" action="/pdf" target="_blank">
@@ -94,6 +81,16 @@
     </div>
 </div>
 
+<div class="audio-player-footer">
+    <div id="audio-info" class="audio-info" style="visibility: visible">
+        <span id="audio-title" style="font-weight: 500"></span>
+        <div class="text-dark-2"><span id="audio-artists"></span></div>
+    </div>
+    <div class="audio-container">
+        <audio id="audio-player" class="custom-audio" controls></audio>
+    </div>
+</div>
+
 <script>
     const audioPlayer = document.getElementById('audio-player');
     const audioTitle = document.getElementById('audio-title');
@@ -103,12 +100,19 @@
         button.addEventListener('click', () => {
             audioPlayer.src = button.dataset.previewUrl;
             audioPlayer.play();
-            audioInfo.style.display = "flex";
+            audioInfo.style.visibility = "visible";
             audioTitle.textContent = button.dataset.title;
             audioArtists.textContent = button.dataset.artists;
         });
     });
 </script>
+
+{% endblock %}
+
+
+{% block footer %}
+
+
 
 {% endblock %}
 

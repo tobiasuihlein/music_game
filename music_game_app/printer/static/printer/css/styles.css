@@ -20,6 +20,29 @@
     --shadow-color: rgb(231, 237, 244);
 }
 
+body {
+    padding-bottom: 100px;
+}
+
+main {
+    flex: 1;
+}
+
+.audio-player-footer {
+    background-color: var(--background-color-1);
+    border-top: 1px solid var(--border-color);
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100px;
+    padding: 10px;
+    display: grid;
+    grid-template-columns: 2fr 1fr 2fr;
+    align-items: center;
+    gap: 20px;
+}
+
 button{
     border: none;
     background: none;
@@ -100,7 +123,7 @@ header{
 }
 
 .sidebar-container{
-    background-color: var(--background-color-1);
+    background-color: var(--background-color-2);
     border: solid 1px var(--border-color);
     border-radius: 12px;
     width: 500px;
@@ -120,7 +143,7 @@ header{
 .chart-container{
     display: flex;
     justify-content: center;
-    padding: 1rem;
+    padding: 2rem;
 }
 
 .main-container{
@@ -139,11 +162,6 @@ header{
     gap: 50px;
 }
 
-.sidebar-playlist-info{
-    color: var(--text-color-dark-1);
-    padding: 2rem;
-}
-
 .sidebar-row{
     margin: 1rem;
     text-align: center;
@@ -152,8 +170,11 @@ header{
 .audio-container{
     border: solid 0px red;
     width: 100%;
-    padding-bottom: 2rem;
-    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    grid-column: 2;
 }
 
 .playlist-form-container{
@@ -266,7 +287,7 @@ tr:hover{
     background-color: white;
     border-radius: 999px;
     border: solid 1px var(--border-color);
-    min-width: 420px;
+    min-width: 320px;
 }
 
 .submit-button{
@@ -310,10 +331,21 @@ input:focus {
 
 .audio-info {
     color: var(--text-color-dark-1);
-    padding: 2rem 0 1rem 0;
     display: flex;
+    justify-content: center;
     flex-direction: column;
-    gap: 0.8rem;
+    text-align: right;
+    gap: 0.2rem;
+    grid-column: 1;
+}
+
+.playlist-info {
+    color: var(--text-color-dark-1);
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    gap: 0.2rem;
 }
 
 .help-button-container {

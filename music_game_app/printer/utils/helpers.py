@@ -16,11 +16,9 @@ def create_distribution_chart(df):
 
     df["release_year"] = df["release_year"].astype(int)
     df["is_available"] = df["preview_url"].notnull()
-    df_na = df[df['preview_url'].isna()]
-    #df = df.dropna()
     years_range = max(df["release_year"]) - min(df["release_year"])
 
-    width = 4
+    width = 5
     height = years_range/8 + 2
 
     aspect = width / height
