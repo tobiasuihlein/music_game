@@ -24,5 +24,5 @@ RUN mkdir -p /app/staticfiles
 RUN chmod -R 755 /app/staticfiles
 RUN python music_game_app/manage.py collectstatic --noinput
 
-# Update the wsgi path
-CMD ["gunicorn", "--bind", "0.0.0.0:8000", "music_game_app.wsgi:application"]
+# Update the wsgi path (further setttings in the docker-compose file)
+CMD ["gunicorn", "music_game_app.wsgi:application"]
