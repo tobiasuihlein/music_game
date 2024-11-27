@@ -4,7 +4,8 @@ DEBUG = True
 ALLOWED_HOSTS = [
     'tobiasuihlein.de',
     'www.tobiasuihlein.de',
-    '138.201.135.222', # server IP
+    '138.201.135.222', # Server IP
+    '10.0.10.200', # Server-Proxy IP
     '10.0.10.210', # VM IP
     'localhost',
     '127.0.0.1'
