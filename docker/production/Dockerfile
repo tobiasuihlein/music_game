@@ -17,7 +17,7 @@ COPY . .
 
 # Set environment variables
 ENV PYTHONPATH=/app/music_game_app
-ENV DJANGO_SETTINGS_MODULE=music_game_app.settings.staging
+ENV DJANGO_SETTINGS_MODULE=music_game_app.settings.prod
 
 # Collect static files to serve
 RUN mkdir -p /app/staticfiles
