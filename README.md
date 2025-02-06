@@ -1,4 +1,4 @@
-# Spotify Playlist Card Generator
+# Spotify QR Code Card Generator
 
 A Django-based web application that transforms Spotify playlists into printable playing card PDFs, inspired by the music guessing game Hitster. The app generates cards displaying artist, song title, and release year on one side, and a QR Code of the song's preview link, which can be scanned using a companion web application for playback. The app is usable without Spotify account.
 
